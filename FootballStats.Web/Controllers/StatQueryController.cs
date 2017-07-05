@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using FootballStats.Core;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,9 +9,18 @@ namespace FootballStats.Web.Controllers
     public class StatQueryController : Controller
     {
         [HttpPost]
-        public async Task<bool> QueryStats(StatQuery query)
+        public async Task<StatQueryResult> QueryStats([FromBody]StatQuery query)
         {
-            return await Task.FromResult(true);
+            var queryResult = new StatQueryResult
+            {
+                SubjectName = query.Subject,
+                Stats = new List<FootballStat>
+                {
+                    new PassingStat{Attempts = 1, Completions = 2, Interceptions = 3, StatGrouping = "Week 1", Touchdowns = 100}
+                }
+            };
+
+            return await Task.FromResult(queryResult);
         }
     }
 }
